@@ -1,0 +1,44 @@
+Readme this
+
+#Reimplement Multiplication
+Define a function mul(a, b) that takes two non-negative integers a and b and returns their product.
+
+You should only use the + and/or - operators. Using * is cheating!
+
+You can do this iteratively or recursively.
+
+%%%%
+
+function mul(a, b) {
+  var num=0;
+  for(var i=0;i<b;i++)num+=a;
+  return num;
+}
+
+%%%%
+
+#Like it on farsebook
+
+You probably know the "like" system from Facebook and other pages. People can "like" blog posts, pictures or other items. We want to create the text that should be displayed next to such an item.
+
+Implement a function likes :: [String] -> String, which must take in input array, containing the names of people who like an item. It must return the display text as shown in the examples:
+
+likes [] // must be "no one likes this"
+likes ["Peter"] // must be "Peter likes this"
+likes ["Jacob", "Alex"] // must be "Jacob and Alex like this"
+likes ["Max", "John", "Mark"] // must be "Max, John and Mark like this"
+likes ["Alex", "Jacob", "Mark", "Max"] // must be "Alex, Jacob and 2 others like this"
+
+%%%%
+
+function likes(names) {
+  return {
+    0: 'no one likes this',
+    1: `${names[0]} likes this`, 
+    2: `${names[0]} and ${names[1]} like this`, 
+    3: `${names[0]}, ${names[1]} and ${names[2]} like this`, 
+    4: `${names[0]}, ${names[1]} and ${names.length - 2} others like this`, 
+  }[Math.min(4, names.length)]
+}
+
+%%%%
