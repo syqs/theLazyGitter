@@ -1,44 +1,256 @@
-Readme this
 
-#Reimplement Multiplication
-Define a function mul(a, b) that takes two non-negative integers a and b and returns their product.
 
-You should only use the + and/or - operators. Using * is cheating!
+#Common Characters
 
-You can do this iteratively or recursively.
+Write a function that accepts two strings as arguments, and returns only the characters that are common to both strings.
 
-%%%%
+Your function should return the common characters in the same order that they appear in the first argument. 
+Do not return duplicate characters and ignore whitespace in your returned string.
 
-function mul(a, b) {
-  var num=0;
-  for(var i=0;i<b;i++)num+=a;
-  return num;
-}
+Example: commonCharacters('acexivou', 'aegihobu')
+
+Returns: 'aeiou'
+
 
 %%%%
 
-#Like it on farsebook
 
-You probably know the "like" system from Facebook and other pages. People can "like" blog posts, pictures or other items. We want to create the text that should be displayed next to such an item.
+Array.prototype.unique = function() {
+  var arr = [];
+  for(var i = 0; i < this.length; i++) {
+    if(arr.indexOf(this[i]) === -1) {
+      arr.push(this[i]);
+    }
+  }
+  return arr;
+};
 
-Implement a function likes :: [String] -> String, which must take in input array, containing the names of people who like an item. It must return the display text as shown in the examples:
+commonCharacters = function(string1, string2){
+  var solution = '';
+  var array1 = string1.replace(/ /g,'').split('').unique();
+  var array2 = string2.replace(/ /g,'').split('').unique();
+  for(var i=0; i<array1.length; i++) {
+    if(array2.indexOf(array1[i]) !== -1) solution += array1[i];
+  }
+  return solution;
+};
 
-likes [] // must be "no one likes this"
-likes ["Peter"] // must be "Peter likes this"
-likes ["Jacob", "Alex"] // must be "Jacob and Alex like this"
-likes ["Max", "John", "Mark"] // must be "Max, John and Mark like this"
-likes ["Alex", "Jacob", "Mark", "Max"] // must be "Alex, Jacob and 2 others like this"
+%%%%
+
+
+
+#Even Occurrence
+
+
+Find the first item that occurs an even number of times in an array. 
+Remember to handle multiple even-occurrence items and return the first one. Return null if there are no even-occurrence items.
 
 %%%%
 
-function likes(names) {
-  return {
-    0: 'no one likes this',
-    1: `${names[0]} likes this`, 
-    2: `${names[0]} and ${names[1]} like this`, 
-    3: `${names[0]}, ${names[1]} and ${names[2]} like this`, 
-    4: `${names[0]}, ${names[1]} and ${names.length - 2} others like this`, 
-  }[Math.min(4, names.length)]
-}
+
+function evenOccurrence (arr) {
+  for(var i=0; i<arr.length; i++) {
+    var currentItem = arr[i];
+    var count = 0;
+    for(var j=0; j<arr.length; j++) {
+      if(arr[j] === currentItem) count += 1;
+    }
+    if(count !== 0 && count % 2 === 0) return currentItem;
+  }
+  return null;
+};
 
 %%%%
+
+
+
+#Non-Repeated Character
+
+Given an arbitrary input string, return the first non-repeating character. For strings with all repeats, return 'sorry'.
+
+
+%%%%
+
+
+function firstNonRepeatedCharacter (string) {
+  for(var i=0; i<string.length; i++) {
+    var currentLetter = string[i];
+    var count = 0;
+    for(var j=0; j<string.length; j++) {
+      if(string[j] === currentLetter) count += 1;
+    }
+    if(count < 2) return currentLetter;
+  }
+  return 'sorry';
+};
+
+%%%%
+
+
+
+#Is Subset Of
+
+Make an array method that can return whether or not a context array is a subset of an input array. 
+To simplify the problem, you can assume that both arrays will contain only strings.
+
+%%%%
+
+
+Array.prototype.isSubsetOf = function(bigArray) {
+  var uniqueSub = this.unique();
+  var uniqueBig = bigArray.unique();
+  var status = true;
+  this.forEach(function(item) {
+    if(bigArray.indexOf(item) === -1) status = false;
+  });
+
+  return status;
+
+};
+
+Array.prototype.unique = function() {
+  var solution = [];
+  for(var i=0; i<this.length; i++) {
+    if(solution.indexOf(this[i]) === -1) solution.push(this[i]);
+  }
+  return solution;
+};
+
+%%%%
+
+
+
+#stringInArray
+
+Given a string and an array of strings, return true if the string exists in the array, and false if it does not.
+
+DO NOT use .includes() in your solution.
+
+DO use a for loop.
+
+TRY solving it with non-mutative recursion, only after you’ve solved it using a for loop.
+
+
+%%%%
+
+
+function searchString(str, array) {
+  var i = 0;
+  function findIt(item) {
+    if(item === str) return true;
+    if(i >= array.length) return false;
+    return findIt(array[i= i+1]);
+  }
+  return findIt(array[0]);
+};
+
+%%%%
+
+
+
+#findObjectInArray
+
+Given a name (string) and an array of people (objects), find the person with the given name and return his/her hobby. 
+Return false if there is no person with the given name.
+
+DO NOT use people.find()
+
+DO use a for loop.
+
+TRY solving it with non-mutative recursion, only after you’ve solved it using a for loop.
+
+%%%%
+
+
+function findPerson (name, people) {
+  var i=0;
+  function recurse(item){
+    console.log('person', people[i]);
+    if(i >= people.length) return false;
+    if(people[i].name === name) return people[i].hobby;
+    return recurse(people[i+=1]);
+  }
+  return recurse(people[0]);
+};
+
+%%%%
+
+
+
+#gmoTax
+
+A new law has been passed that mandates a tax on genetically modified food. 
+A certain farmer decides to increase the price of his goods by 15% in response, and wants your help on analyzing the difference. 
+Given the farmer’s catalog of original prices and a category name, your task is to return the sum of all price increases for foods in that category 
+after the 15% increase (round to the nearest cent).
+
+NOTE: You are required to use at least one filter. Pros can use reduce to make their code even more functional-style.
+
+%%%%
+
+
+function getTaxIncrease (foods, category) {
+
+  return foods.filter(catFilt)
+  .reduce(function(accum, item) {
+    return accum + item.centsPerUnit*0.15;
+  }, 0);
+
+  function catFilt(food) {
+    if(food.category === category) return true;
+    return false;
+  }
+};
+
+%%%%
+
+
+
+#findMatchingObjects
+
+Finding all matching objects in an array Given an array of players (objects), return the names of all players that have a score above 100.
+
+DO NOT use .filter() in your solution.
+
+DO use a for loop.
+
+TRY solving it with non-mutative recursion, only after you’ve solved it using a for loop.
+
+Examples
+
+Input:
+
+players: [ { "name": "Alice", "score": 88 }, { "name": "Bob", "score": 120 } ]
+
+Output:
+
+["Bob"]
+
+%%%%
+
+
+function topPlayers(players) {
+  var results = [];
+  function checkScoreAndReturnName(lessPlayers) {
+    if(lessPlayers.length <= 0) return results;
+    var currentPlayer = lessPlayers[0];
+    if(currentPlayer.score > 100) results.push(currentPlayer.name);
+    return checkScoreAndReturnName(lessPlayers.slice(1));
+  }
+  return checkScoreAndReturnName(players);
+};
+
+%%%%
+
+
+Multiples of 3 and 5
+
+If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+
+Finish the solution so that it returns the sum of all the multiples of 3 or 5 below the number passed in.
+
+Note: If the number is a multiple of both 3 and 5, only count it once.
+
+
+%%%%
+

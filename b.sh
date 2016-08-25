@@ -1,23 +1,47 @@
 #!/bin/bash
-echo "hello, $USER. I wish to list some files of yours"
+echo "  _______________________________________   "
+echo "/ hello, $USER. I wish to do some work for \ "
+echo "\ your lazy butt                          / "
+echo "  ---------------------------------------   "
+echo "        \   ^__^                             "
+echo "         \  (oo)\_______                     "
+echo "            (__)\       )\/\                 "
+echo "               ||----w |                     "
+echo "               ||     ||                     "
+    
+#git handle
+USER=fakeGitHandle
 
+#git token
+TOKEN=fake0234823042token34034
 
-NUMB=$((1 + RANDOM % 1003))
+#repo name
+REPO=randomRepoName
 
+#branch name
+PRO=leBrancherino
 
-awk -f split2.awk problems2
+NUMB=$((1 + RANDOM % 10003))
+awk -f chris.awk problems2
 sleep 2
-mkdir probl1
-mv README.md probl1/README.md
-mv solution.js probl1/solution.js
+mkdir problem$NUMB
+mv README.md problem$NUMB/README.md
+mv solution.js problem$NUMB/solution.js
 cd problem$NUMB
 git init
 git add .
 git commit -m "initial commit"
-git remote add origin https://gihub.com/syqs/jsToyProblems.git
-git push -u origin master
-sleep 2
+x=''
+x=`curl -s https://github.com/$USER/$REPO`
+if [ $x == *"error"* ]; then
+curl -u "$USER:$TOKEN" https://api.github.com/user/repos -d '{"name":"'$REPO'"}'
+else
+git checkout -b $PRO$NUMB
+fi
+sleep 1
+git remote add origin https://github.com/$USER/$REPO.git
+git push -u origin $PRO$NUMB
+cd ..
+rm problems2 
+mv tmp_problems problems2
 echo "donzo"
-
-
-ls  # list files
